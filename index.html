@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architectural Project | The Pavilion</title>
+
+    <!-- Google Fonts for a clean, modern look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* CSS RESET & BASE STYLES */
+        :root {
+            --background-color: #0d0d0d;
+            --text-color: #e0e0e0;
+            --primary-color: #ffffff;
+            --secondary-color: #888888;
+            --border-color: #2a2a2a;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--background-color); color: var(--text-color); line-height: 1.6; }
+        h1, h2 { font-weight: 700; color: var(--primary-color); line-height: 1.2; letter-spacing: 1px; }
+        h1 { font-size: clamp(2.5rem, 5vw, 4rem); }
+        h2 { font-size: 2rem; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 40px; text-align: center; color: var(--secondary-color); }
+        p { font-weight: 300; font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+        a { color: var(--primary-color); text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: var(--secondary-color); }
+        .container { width: 90%; max-width: 1400px; margin: 0 auto; padding: 100px 0; }
+        .main-header { position: fixed; top: 0; left: 0; width: 100%; padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(13, 13, 13, 0.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); }
+        .logo { font-weight: 700; font-size: 1.2rem; letter-spacing: 1px; }
+        .main-nav a { margin-left: 30px; font-weight: 400; }
+        #hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 20px; background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('images/hero.png'); background-size: cover; background-position: center; background-attachment: fixed; }
+        #hero p { margin-top: 20px; color: var(--secondary-color); }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
+        .gallery-item { background-color: #1a1a1a; border: 1px solid var(--border-color); overflow: hidden; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .gallery-item:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .gallery-item img { width: 100%; height: 100%; display: block; object-fit: cover; transition: transform 0.4s ease; }
+        .gallery-item:hover img { transform: scale(1.05); }
+        #drawings .gallery-item { background-color: var(--primary-color); }
+        #drawings img { object-fit: contain; padding: 20px; }
+        .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.645, 0.045, 0.355, 1), transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1); }
+        .fade-in.is-visible { opacity: 1; transform: translateY(0); }
+        .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); display: flex; justify-content: center; align-items: center; z-index: 2000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; padding: 20px; }
+        .lightbox.active { opacity: 1; visibility: visible; }
+        .lightbox img { max-width: 95%; max-height: 95%; object-fit: contain; }
+        .lightbox-close { position: absolute; top: 30px; right: 30px; font-size: 3rem; color: var(--primary-color); cursor: pointer; line-height: 1; }
+        .lightbox-close:hover { color: var(--secondary-color); }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <div class="logo">THE PAVILION</div>
+        <nav class="main-nav">
+            <a href="#hero">Home</a>
+            <a href="#facades">Facades</a>
+            <a href="#drawings">Drawings</a>
+        </nav>
+    </header>
+    <main>
+        <section id="hero">
+            <h1 class="fade-in">A Study in Form and Light</h1>
+            <p class="fade-in">An exploration of structural expression and material translucency.</p>
+        </section>
+        <section id="facades" class="container">
+            <h2 class="fade-in">Facade Views</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item fade-in"><img src="images/facade-01.png" alt="Facade View 1"></div>
+                <div class="gallery-item fade-in"><img src="images/facade-02.png" alt="Facade View 2"></div>
+                <div class="gallery-item fade-in"><img src="images/facade-03.png" alt="Facade View 3"></div>
+                <div class="gallery-item fade-in"><img src="images/facade-04.png" alt="Facade View 4"></div>
+                <div class="gallery-item fade-in"><img src="images/facade-detail-01.png" alt="Facade Detail 1"></div>
+                <div class="gallery-item fade-in"><img src="images/facade-detail-02.png" alt="Facade Detail 2"></div>
+            </div>
+        </section>
+        <section id="drawings" class="container">
+            <h2 class="fade-in">Technical Drawings</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item fade-in"><img src="images/drawing-section-a.png" alt="Section A"></div>
+                <div class="gallery-item fade-in"><img src="images/drawing-section-b.png" alt="Section B"></div>
+                <div class="gallery-item fade-in"><img src="images/drawing-floor-plan-a.png" alt="Floor Plan A"></div>
+                <div class="gallery-item fade-in"><img src="images/drawing-floor-plan-b.png" alt="Floor Plan B"></div>
+                <div class="gallery-item fade-in"><img src="images/drawing-ground-plan.png" alt="Ground Floor Plan"></div>
+                <div class="gallery-item fade-in"><img src="images/drawing-roof-plan.png" alt="Roof Plan"></div>
+                <div class="gallery-item fade-in"><img src="images/drawing-office-plan.png" alt="Office Floor Plan"></div>
+            </div>
+        </section>
+    </main>
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" id="lightbox-close">&times;</span>
+        <img src="" alt="Enlarged View" class="lightbox-content" id="lightbox-img">
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const faders = document.querySelectorAll('.fade-in');
+            const appearOnScroll = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.2, rootMargin: "0px 0px -50px 0px" });
+            faders.forEach(fader => appearOnScroll.observe(fader));
+            const lightbox = document.getElementById('lightbox'), lightboxImg = document.getElementById('lightbox-img'), closeBtn = document.getElementById('lightbox-close'), galleryItems = document.querySelectorAll('.gallery-item');
+            galleryItems.forEach(item => item.addEventListener('click', () => { lightboxImg.src = item.querySelector('img').src; lightbox.classList.add('active'); }));
+            const closeLightbox = () => { lightbox.classList.remove('active'); setTimeout(() => { lightboxImg.src = ''; }, 300); };
+            closeBtn.addEventListener('click', closeLightbox);
+            lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && lightbox.classList.contains('active')) closeLightbox(); });
+        });
+    </script>
+</body>
+</html>
