@@ -17,7 +17,6 @@
         }
 
         html {
-            /* Enables smooth scrolling when navigation links are clicked */
             scroll-behavior: smooth;
         }
 
@@ -26,7 +25,6 @@
             color: #FFFFFF;
             font-family: 'Inter', sans-serif;
             font-weight: 300;
-            /* This is the key for the seamless scroll effect */
             scroll-snap-type: y mandatory;
             overflow-y: scroll;
             height: 100vh;
@@ -41,6 +39,7 @@
 
         h1 {
             font-size: 1.2rem;
+            margin-bottom: 1.5rem;
         }
 
         h2 {
@@ -49,28 +48,20 @@
             text-align: center;
         }
 
-        h3 {
-            font-size: 0.8rem;
-            margin-bottom: 2rem;
-            color: #999; /* A slightly dimmer white for sub-headings */
-        }
-
         a {
             text-decoration: none;
             transition: color 0.3s ease, font-weight 0.3s ease;
         }
 
-        /* --- HEADER & NAVIGATION --- */
+        /* --- HEADER & NAVIGATION (REVISED) --- */
         .main-header {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
             padding: 3rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
             z-index: 100;
+            display: flex;
+            flex-direction: column;
         }
         
         .main-header h1 a {
@@ -84,7 +75,6 @@
         .main-header nav li {
             margin-bottom: 0.5rem;
             font-size: 0.8rem;
-            text-align: right;
             letter-spacing: 0.05em;
             text-transform: uppercase;
         }
@@ -99,141 +89,144 @@
             font-weight: 500;
         }
 
-
         /* --- SECTION STYLING --- */
         section {
             width: 100%;
             height: 100vh;
-            /* Each section is a snap point */
             scroll-snap-align: start;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 6rem 3rem; /* Padding to avoid content hitting edges */
-            overflow: hidden;
+            padding: 6rem 3rem;
+            overflow-y: auto; /* Allow scrolling within sections if content overflows */
         }
 
-        /* Hero section has special styling for the sketch */
-        #hero {
-            justify-content: center;
-            align-items: center;
-        }
-
-        .hero-content img {
-            max-width: 50vw;
-            max-height: 50vh;
+        /* HERO SECTION (REVISED) --- */
+        #hero .hero-content img {
+            max-width: 70vw; /* Much bigger */
+            max-height: 70vh;
             width: auto;
             height: auto;
+            object-fit: contain;
         }
 
-        /* --- GALLERY & GRID LAYOUTS --- */
-        .gallery-grid-full,
-        .gallery-grid-two,
-        .gallery-grid-four {
+        /* --- GALLERY & GRID LAYOUTS (REVISED) --- */
+        .gallery-grid-full, .gallery-grid-two, .gallery-vertical {
             display: grid;
-            gap: 1rem;
             width: 100%;
-            max-width: 1400px;
-            height: 100%;
+            height: auto;
         }
 
         .gallery-grid-full {
             grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            max-width: 1400px;
         }
 
         .gallery-grid-two {
             grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
             max-width: 1000px;
         }
-
-        .gallery-grid-four {
-            grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile/tablet */
-            grid-template-rows: repeat(auto, 1fr);
-        }
-
-        /* Make drawings section more organized */
-        .drawing-group {
-            width: 100%;
-            max-width: 1200px;
-            margin-bottom: 3rem;
-            text-align: center;
-        }
-        .drawing-group:last-child {
-            margin-bottom: 0;
+        
+        /* New style for vertical drawings */
+        .gallery-vertical {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3rem; /* Space between vertical images */
+            max-width: 1000px;
         }
 
         .gallery-grid-full img,
         .gallery-grid-two img,
-        .gallery-grid-four img {
+        .gallery-vertical img {
             width: 100%;
-            height: 100%;
-            object-fit: contain; /* Use 'contain' for drawings and 'cover' for photos if preferred */
-            background-color: #111; /* A dark background for the images */
+            max-width: 80vw; /* Limit drawing width on large screens */
+            height: auto;
+            object-fit: contain;
+            cursor: pointer; /* Indicates images are clickable */
+            transition: transform 0.3s ease;
         }
 
-        /* --- INFO SECTION --- */
-        #info {
-            padding-top: 10rem; /* Give more space from top for the info text */
+        .gallery-grid-full img:hover,
+        .gallery-grid-two img:hover,
+        .gallery-vertical img:hover {
+            transform: scale(1.02); /* Subtle hover effect */
         }
+
+        /* --- INFO & ABOUT SECTIONS --- */
         .info-content {
             max-width: 600px;
             text-align: center;
+            line-height: 1.7;
         }
 
         .info-content p {
-            font-size: 0.9rem;
-            line-height: 1.6;
             margin-bottom: 1rem;
             color: #ccc;
         }
-
-        .info-content p.description {
-            margin-top: 2rem;
-            line-height: 1.8;
-            color: #fff;
-        }
-
         .info-content strong {
             font-weight: 500;
             color: #fff;
         }
 
-        /* --- RESPONSIVE ADJUSTMENTS --- */
-        @media (min-width: 768px) {
-            .gallery-grid-four {
-                grid-template-columns: repeat(4, 1fr); /* 4 columns on desktop */
-            }
+        /* --- LIGHTBOX (NEW) --- */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            visibility: hidden; /* Use visibility and opacity for transitions */
+            opacity: 0;
+            transition: visibility 0s 0.3s, opacity 0.3s ease-in-out;
+        }
+        
+        .lightbox.active {
+            visibility: visible;
+            opacity: 1;
+            transition: visibility 0s, opacity 0.3s ease-in-out;
+        }
+        
+        .lightbox img {
+            display: block;
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            cursor: default; /* Keep default cursor on the image itself */
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: 2rem;
+            right: 3rem;
+            color: #fff;
+            font-size: 2.5rem;
+            font-weight: 300;
+            cursor: pointer;
+            transition: transform 0.3s ease;
         }
 
+        .lightbox-close:hover {
+            transform: scale(1.1);
+        }
+
+        /* --- RESPONSIVE ADJUSTMENTS --- */
         @media (max-width: 768px) {
             .main-header {
-                flex-direction: column;
                 padding: 1.5rem;
             }
-
-            .main-header h1 {
-                margin-bottom: 1rem;
-            }
-
-            .main-header nav ul {
-                display: flex;
-            }
-            
-            .main-header nav li {
-                margin-bottom: 0;
-                margin-right: 1rem;
-                text-align: left;
-            }
-            
             section {
-                padding: 5rem 1.5rem;
+                padding: 6rem 1.5rem;
             }
-            
-            h2 {
-                margin-bottom: 2rem;
-            }
-
             .gallery-grid-full, .gallery-grid-two {
                 grid-template-columns: 1fr;
             }
@@ -250,6 +243,7 @@
                 <li><a href="#visualizations">VISUALIZATIONS</a></li>
                 <li><a href="#drawings">TECHNICAL DRAWINGS</a></li>
                 <li><a href="#info">INFO</a></li>
+                <li><a href="#about">ABOUT</a></li>
             </ul>
         </nav>
     </header>
@@ -266,98 +260,131 @@
         <section id="visualizations" class="content-section">
             <h2>VISUALIZATIONS</h2>
             <div class="gallery-grid-full">
-                <img src="images/viz-01.jpg" alt="Visualization of the Pavilion exterior">
-                <img src="images/viz-02.jpg" alt="Visualization of the Pavilion interior">
-                <img src="images/viz-03.jpg" alt="Visualization of the Pavilion at dusk">
+                <img src="images/viz-01.jpg" alt="Visualization of the Pavilion exterior" class="expandable">
+                <img src="images/viz-02.jpg" alt="Visualization of the Pavilion interior" class="expandable">
+                <img src="images/viz-03.jpg" alt="Visualization of the Pavilion at dusk" class="expandable">
             </div>
         </section>
 
-        <!-- CLOSE-UPS (Part of Visualizations) -->
+        <!-- CLOSE-UPS SECTION -->
         <section id="closeups" class="content-section">
              <h2>CLOSE-UPS</h2>
             <div class="gallery-grid-two">
-                <img src="images/closeup-01.jpg" alt="Detail shot of the Pavilion materials">
-                <img src="images/closeup-02.jpg" alt="Close-up of a window detail">
+                <img src="images/closeup-01.jpg" alt="Detail shot of the Pavilion materials" class="expandable">
+                <img src="images/closeup-02.jpg" alt="Close-up of a window detail" class="expandable">
             </div>
         </section>
 
-        <!-- DRAWINGS SECTION -->
+        <!-- DRAWINGS SECTION (REVISED) -->
         <section id="drawings" class="content-section">
-            <h2>TECHNICAL DRAWINGS</h2>
-            <div class="drawing-group">
-                <h3>FACADES</h3>
-                <div class="gallery-grid-four">
-                    <img src="images/facade-01.png" alt="North Facade">
-                    <img src="images/facade-02.png" alt="East Facade">
-                    <img src="images/facade-03.png" alt="South Facade">
-                    <img src="images/facade-04.png" alt="West Facade">
-                </div>
+            <h2>FACADES</h2>
+            <div class="gallery-vertical">
+                <img src="images/facade-01.png" alt="North Facade" class="expandable">
+                <img src="images/facade-02.png" alt="East Facade" class="expandable">
+                <img src="images/facade-03.png" alt="South Facade" class="expandable">
+                <img src="images/facade-04.png" alt="West Facade" class="expandable">
             </div>
-            <div class="drawing-group">
-                <h3>SECTIONS & PLANS</h3>
-                <div class="gallery-grid-four">
-                    <img src="images/section-01.png" alt="Cross Section AA">
-                    <img src="images/section-02.png" alt="Longitudinal Section BB">
-                    <img src="images/plan-01.png" alt="Ground Floor Plan">
-                    <img src="images/plan-02.png" alt="First Floor Plan">
-                    <img src="images/plan-03.png" alt="Roof Plan">
-                    <img src="images/plan-04.png" alt="Site Plan">
-                </div>
+        </section>
+
+        <section id="plans" class="content-section">
+            <h2>SECTIONS & PLANS</h2>
+            <div class="gallery-vertical">
+                <img src="images/section-01.png" alt="Cross Section AA" class="expandable">
+                <img src="images/section-02.png" alt="Longitudinal Section BB" class="expandable">
+                <img src="images/plan-01.png" alt="Ground Floor Plan" class="expandable">
+                <img src="images/plan-02.png" alt="First Floor Plan" class="expandable">
+                <img src="images/plan-03.png" alt="Roof Plan" class="expandable">
+                <img src="images/plan-04.png" alt="Site Plan" class="expandable">
             </div>
         </section>
 
         <!-- INFO SECTION -->
         <section id="info" class="content-section">
-            <h2>INFO</h2>
             <div class="info-content">
+                <h2>INFO</h2>
                 <p><strong>Project:</strong> The Pavilion</p>
                 <p><strong>Location:</strong> Fictional Site, Earth</p>
                 <p><strong>Architect:</strong> Elemental Architecture</p>
                 <p><strong>Year:</strong> 2024</p>
-                <p class="description">
-                    The Pavilion is a study in minimalism and the interplay between structure and nature.
-                    Designed to be a place of quiet contemplation, its form is derived from the stark,
-                    elemental shapes found in the surrounding landscape.
+            </div>
+        </section>
+
+        <!-- ABOUT SECTION (NEW) -->
+        <section id="about" class="content-section">
+            <div class="info-content">
+                <h2>ABOUT</h2>
+                <p>
+                    Elemental Architecture is a design studio focused on creating visionary structures
+                    that blend aesthetics, functionality, and sustainability. We believe in timeless design
+                    that respects its context and is built for the future.
                 </p>
             </div>
         </section>
     </main>
+    
+    <!-- LIGHTBOX HTML (NEW) -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close">×</span>
+        <img src="" alt="Expanded View" class="lightbox-image">
+    </div>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // This script uses Intersection Observer for performance.
-            // It's more efficient than listening to every scroll event.
+            // --- LIGHTBOX SCRIPT (NEW) ---
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = lightbox.querySelector('.lightbox-image');
+            const expandableImages = document.querySelectorAll('.expandable');
+            const lightboxClose = document.querySelector('.lightbox-close');
+
+            expandableImages.forEach(image => {
+                image.addEventListener('click', () => {
+                    lightboxImage.src = image.src;
+                    lightbox.classList.add('active');
+                });
+            });
+
+            const closeLightbox = () => {
+                lightbox.classList.remove('active');
+                // Optional: clear src after transition to prevent loading flash
+                setTimeout(() => { lightboxImage.src = ''; }, 300);
+            };
+
+            // Close by clicking the 'X' button
+            lightboxClose.addEventListener('click', closeLightbox);
+
+            // Close by clicking on the background (but not the image itself)
+            lightbox.addEventListener('click', (e) => {
+                if (e.target !== lightboxImage) {
+                    closeLightbox();
+                }
+            });
+
+
+            // --- NAVIGATION HIGHLIGHT SCRIPT (UPDATED) ---
             const sections = document.querySelectorAll('.content-section, #hero');
             const navLinks = document.querySelectorAll('.main-header nav a');
 
             const observerOptions = {
-                root: null, // observes intersections relative to the viewport
+                root: null,
                 rootMargin: '0px',
                 threshold: 0.5 // trigger when 50% of the section is visible
             };
 
-            const observer = new IntersectionObserver((entries, observer) => {
+            const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        // Get the ID of the visible section
                         const visibleSectionId = entry.target.id;
-                        
-                        // Remove 'active' class from all nav links
-                        navLinks.forEach(link => {
-                            link.classList.remove('active');
-                        });
-                        
-                        // Find the corresponding nav link and add 'active' class
-                        // Handles multiple sections like viz and closeups mapping to one link
+                        navLinks.forEach(link => link.classList.remove('active'));
+
                         let targetLink;
-                        if (visibleSectionId === 'closeups') {
-                            targetLink = document.querySelector(`a[href="#visualizations"]`);
-                        } else if (visibleSectionId === 'hero') {
-                            // No link for hero, so do nothing or clear all
+                        // Map multiple sections to a single nav link
+                        if (['closeups', 'plans'].includes(visibleSectionId)) {
+                             targetLink = document.querySelector(`a[href="#drawings"]`);
                         } else {
-                            targetLink = document.querySelector(`a[href="#${visibleSectionId}"]`);
+                             targetLink = document.querySelector(`a[href="#${visibleSectionId}"]`);
                         }
-                        
+
                         if (targetLink) {
                             targetLink.classList.add('active');
                         }
@@ -365,7 +392,6 @@
                 });
             }, observerOptions);
 
-            // Tell the observer to watch each section
             sections.forEach(section => {
                 observer.observe(section);
             });
